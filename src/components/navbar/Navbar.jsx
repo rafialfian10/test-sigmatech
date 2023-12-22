@@ -1,8 +1,8 @@
 // components react
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 // components
+import Login from "../login/Login";
 import Logout from "../logout/Logout";
 
 // components react bootstrap
@@ -10,9 +10,6 @@ import {
   Container,
   Nav,
   Navbar,
-  ButtonGroup,
-  Dropdown,
-  Image,
   Form,
   InputGroup,
   Button,
@@ -21,17 +18,13 @@ import {
 // css
 import "./Navbar.scss";
 
-// images
-import defaultPhoto from "../../assets/img/default-photo.png";
-import Login from "../login/Login";
-
 const Navbars = ({ search, handleSearch }) => {
   // Cek apakah token ada di local storage
-  const isTokenExists = localStorage.getItem("token");
+  const userToken = localStorage.getItem("token");
 
   // Handle Login
-  const [showLog, setShowLog] = useState(false);
-  const handleShowLog = () => setShowLog(true);
+  const [showLogin, setShowLogin] = useState(false);
+  const handleShowLogin = () => setShowLogin(true);
 
   return (
     <>
@@ -57,13 +50,13 @@ const Navbars = ({ search, handleSearch }) => {
                 </InputGroup>
               </Navbar.Brand>
 
-              {isTokenExists ? (
+              {userToken ? (
                 <Logout />
               ) : (
                 <Login
-                  showLog={showLog}
-                  setShowLog={setShowLog}
-                  handleShowLog={handleShowLog}
+                  showLogin={showLogin}
+                  setShowLogin={setShowLogin}
+                  handleShowLogin={handleShowLogin}
                 />
               )}
             </Nav>

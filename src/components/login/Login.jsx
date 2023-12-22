@@ -8,15 +8,15 @@ import Swal from "sweetalert2";
 // css
 import "./Login.scss";
 
-const Login = ({ showLog, setShowLog, handleShowLog }) => {
-  const handleCloseLog = () => setShowLog(false);
-
+const Login = ({ showLogin, setShowLogin, handleShowLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleClose = () => setShowLog(false);
+  const handleCloseLogin = () => setShowLogin(false);
 
-  const handleLogin = () => {
+  const handleLogin = (event) => {
+    event.preventDefault();
+
     if (email === "rafialfian770@gmail.com" && password === "12345678") {
       const token = "ini-adalah-token-mas-bro";
       localStorage.setItem("token", token);
@@ -26,7 +26,7 @@ const Login = ({ showLog, setShowLog, handleShowLog }) => {
         icon: "success",
         confirmButtonText: "Ok",
       }).then(() => {
-        setShowLog(false);
+        setShowLogin(false);
       });
 
     } else {
@@ -34,18 +34,20 @@ const Login = ({ showLog, setShowLog, handleShowLog }) => {
         text: "Login failed (email / password incorrect)",
         icon: "error",
         confirmButtonText: "Ok",
+      }).then(() => {
+        setShowLogin(false);
       });
     }
   };
 
   return (
     <>
-      <Nav.Link className="login" onClick={handleShowLog}>
+      <Nav.Link className="login" onClick={handleShowLogin}>
         Login
       </Nav.Link>
       <Modal
-        show={showLog}
-        onHide={handleCloseLog}
+        show={showLogin}
+        onHide={handleCloseLogin}
         className="modal-login"
         size="lg"
       >

@@ -9,9 +9,12 @@ import { API } from "../../config/api";
 import { Button, Table, Modal } from "react-bootstrap";
 
 // style
-import "./Cards.scss";
+import "./TableDatas.scss";
 
-const Cards = () => {
+const TableDatas = () => {
+  // Cek apakah token ada di local storage
+  const userToken = localStorage.getItem("token");
+
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -54,34 +57,48 @@ const Cards = () => {
           </tr>
         </thead>
         <tbody>
-          {UniversitiesHipolabs ? (
-            UniversitiesHipolabs.map((data, i) => (
-              <tr key={i}>
-                <td>{i + 1}</td>
-                <td style={{ textAlign: "start" }}>{data.name}</td>
-                <td style={{ textAlign: "start" }}>{data.country}</td>
-                <td style={{ textAlign: "start" }}>{data.web_pages}</td>
-                <td>
-                  <Button onClick={() => handleShowModal(data)}>View</Button>
-                </td>
+          {userToken ? (
+            UniversitiesHipolabs ? (
+              UniversitiesHipolabs.map((data, i) => (
+                <tr key={i}>
+                  <td>{i + 1}</td>
+                  <td style={{ textAlign: "start" }}>{data.name}</td>
+                  <td style={{ textAlign: "start" }}>{data.country}</td>
+                  <td style={{ textAlign: "start" }}>
+                    <a
+                      href={data.web_pages}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {data.web_pages}
+                    </a>
+                  </td>
+                  <td>
+                    <Button onClick={() => handleShowModal(data)}>View</Button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5">Loading...</td>
               </tr>
-            ))
+            )
           ) : (
             <tr>
-              <td colSpan="2">Loading...</td>
+              <td colSpan="5">Data not found. Please log in.</td>
             </tr>
           )}
         </tbody>
       </Table>
 
       {/* modal */}
-      <Modal show={showModal} onHide={handleCloseModal} centered>
+      <Modal show={showModal} onHide={handleCloseModal} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>University Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {selectedUniversity && (
-            <Table striped bordered hover style={{margin: 0}}>
+            <Table striped bordered hover style={{ margin: 0 }}>
               <tbody>
                 <tr>
                   <td>University Name:</td>
@@ -104,4 +121,4 @@ const Cards = () => {
   );
 };
 
-export default Cards;
+export default TableDatas;

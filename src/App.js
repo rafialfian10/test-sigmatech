@@ -2,10 +2,7 @@
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 
-// api
-import { API, setAuthToken } from "./config/api";
-
-// pages
+// components
 import Navbars from "./components/navbar/Navbar";
 import Home from "./Home/Home";
 

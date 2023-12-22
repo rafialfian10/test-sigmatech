@@ -1,6 +1,3 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
 // react bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -8,15 +5,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./Home.scss";
 
 // components
-import Cards from "../components/cards/Cards";
+import TableDatas from "../components/table-data/TableDatas";
 
-const Home = ({ books, search }) => {
-
-  const navigate = useNavigate();
+const Home = () => {
 
   return (
     <>
-      <Cards />
+      <TableDatas />
     </>
   );
 };
