@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // components react
 import { Route, Routes } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -20,7 +21,9 @@ function App() {
     async () => {
       try {
         const response = await API.get("/search?country=indonesia");
-        setUniversities(response.data);
+        if (response.data) {
+          setUniversities(response.data);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
         throw new Error("Failed to fetch data from the API");
