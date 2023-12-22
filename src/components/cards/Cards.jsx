@@ -25,31 +25,19 @@ const Cards = () => {
   const navigate = useNavigate();
 
   // books promo
-  let { data: UniversitiesHipolabs, refetch: refetchUniversitiesHipolabs } = useQuery(
-    "UniversitiesHipolabsCache",
-    async () => {
+  let { data: UniversitiesHipolabs, refetch: refetchUniversitiesHipolabs } =
+    useQuery("UniversitiesHipolabsCache", async () => {
       const response = await API.get(`/search?country=United States`);
       return response.data.data;
-    }
-  );
+    });
 
   console.log(UniversitiesHipolabs);
 
   return (
     <>
-      <Swiper
-        slidesPerView={3}
-        spaceBetween={50}
-        pagination={{ clickable: true }}
-        modules={[Pagination]}
-        className="mySwiper container-card-slider"
-      >
-        {UniversitiesHipolabs?.map((data, i) => {
-          return (
-            ""
-          );
-        })}
-      </Swiper>
+      {UniversitiesHipolabs?.map((data, i) => {
+        return "";
+      })}
     </>
   );
 };
