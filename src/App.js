@@ -2,8 +2,7 @@
 // components
 // eslint-disable-next-line no-unused-vars
 import { Route, Routes } from "react-router-dom";
-import { useEffect, useContext, useState } from "react";
-import { useQuery } from "react-query";
+import { useState } from "react";
 
 // api
 import { API, setAuthToken } from "./config/api";
@@ -11,9 +10,6 @@ import { API, setAuthToken } from "./config/api";
 // pages
 import Navbars from "./components/navbar/Navbar";
 import Home from "./Home/Home";
-import {
-  PageNotFound,
-} from "./components/private_route/PrivateRoute";
 
 function App() {
 
@@ -32,14 +28,11 @@ function App() {
     <>
       <Navbars search={search} handleSearch={handleSearch} />
       <Routes>
-        {/* public */}
         <Route
           exact
           path="/"
           element={<Home books={books} search={search} />}
         />
-
-        <Route exact path="/:pageName" element={<PageNotFound />} />
       </Routes>
     </>
   );

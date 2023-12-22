@@ -8,7 +8,6 @@ import { Pagination } from "swiper";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Popup from "../popup/Popup";
 
 // api
 import { API } from "../../config/api";
@@ -25,9 +24,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 const Cards = () => {
   const navigate = useNavigate();
 
-  // state popup
-  const [popup, setPopup] = useState(false);
-
   // books promo
   let { data: UniversitiesHipolabs, refetch: refetchUniversitiesHipolabs } = useQuery(
     "UniversitiesHipolabsCache",
@@ -41,7 +37,6 @@ const Cards = () => {
 
   return (
     <>
-      <Popup popup={popup} setPopup={setPopup} />
       <Swiper
         slidesPerView={3}
         spaceBetween={50}
