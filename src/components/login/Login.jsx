@@ -1,74 +1,41 @@
-/* eslint-disable no-unused-vars */
+// components react
+import { useState } from "react";
+
 // component react bootstrap
 import { Nav, Button, Form, Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
 
-// components
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "react-query";
-import { useState } from "react";
-
-// api
-import { API } from "../../config/api";
-
 // css
 import "./Login.scss";
 
-const Login = ({ showLog, setShowLog, handleShowReg, handleShowLog }) => {
-  const navigate = useNavigate();
-
+const Login = ({ showLog, setShowLog, handleShowLog }) => {
   const handleCloseLog = () => setShowLog(false);
 
-  // process login
-  const [formlogin, setFormLogin] = useState({
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const HandleChangeLogin = (event) => {
-    setFormLogin({ ...formlogin, [event.target.name]: event.target.value });
-  };
+  const handleClose = () => setShowLog(false);
 
-  // function login submit
-  const HandleLoginSubmit = useMutation(async (e) => {
-    e.preventDefault();
-    try {
-      const config = {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
-        },
-      };
+  const handleLogin = () => {
+    if (email === "rafialfian770@gmail.com" && password === "12345678") {
+      const token = "ini-adalah-token-mas-bro";
+      localStorage.setItem("token", token);
 
-      // Data body
-      const body = JSON.stringify(formlogin);
-
-      const response = await API.post("/login", body, config);
-
-      if (response.data.code === 200) {
+      Swal.fire({
+        text: "Login Successfully",
+        icon: "success",
+        confirmButtonText: "Ok",
+      }).then(() => {
         setShowLog(false);
+      });
 
-        Swal.fire({
-          text: "Login successfully",
-          icon: "success",
-          confirmButtonText: "Ok",
-        });
-
-        navigate("/");
-      }
-    } catch (err) {
+    } else {
       Swal.fire({
         text: "Login failed (email / password incorrect)",
         icon: "error",
         confirmButtonText: "Ok",
       });
-      console.log(err);
     }
-  });
-
-  const handleShowRegister = () => {
-    handleCloseLog();
-    handleShowReg();
   };
 
   return (
@@ -90,7 +57,7 @@ const Login = ({ showLog, setShowLog, handleShowReg, handleShowLog }) => {
               <Form.Control
                 type="email"
                 name="email"
-                onChange={HandleChangeLogin}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Form.Group>
             <Form.Group className="form-group" controlId="formBasicPassword">
@@ -98,27 +65,17 @@ const Login = ({ showLog, setShowLog, handleShowReg, handleShowLog }) => {
               <Form.Control
                 type="password"
                 name="password"
-                onChange={HandleChangeLogin}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
             <Button
               variant="primary"
               type="submit"
               className="button-submit"
-              onClick={(e) => HandleLoginSubmit.mutate(e)}
+              onClick={handleLogin}
             >
               Submit
             </Button>
-            <p>
-              Don't have an account?
-              <button
-                className="btn-show-register"
-                type="button"
-                onClick={handleShowRegister}
-              >
-                Click here
-              </button>
-            </p>
           </Form>
         </Modal.Body>
       </Modal>

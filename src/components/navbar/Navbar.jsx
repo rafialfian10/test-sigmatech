@@ -1,3 +1,10 @@
+// components react
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+// components
+import Logout from "../logout/Logout";
+
 // components react bootstrap
 import {
   Container,
@@ -10,37 +17,21 @@ import {
   InputGroup,
   Button,
 } from "react-bootstrap";
-import Swal from "sweetalert2";
-
-// components
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useQuery } from "react-query";
 
 // css
 import "./Navbar.scss";
 
-// api
-import { API } from "../../config/api";
-
 // images
-import logo from "../../assets/img/logo.png";
-import profile from "../../assets/img/profile.png";
-import complain from "../../assets/img/complain.png";
-import logout from "../../assets/img/logout.png";
-import addbook from "../../assets/img/addbook.png";
-import bracket from "../../assets/img/bracket.png";
-import admin from "../../assets/img/admin.png";
 import defaultPhoto from "../../assets/img/default-photo.png";
 import Login from "../login/Login";
 
 const Navbars = ({ search, handleSearch }) => {
-  const navigate = useNavigate();
+  // Cek apakah token ada di local storage
+  const isTokenExists = localStorage.getItem("token");
 
   // Handle Login
   const [showLog, setShowLog] = useState(false);
   const handleShowLog = () => setShowLog(true);
-
 
   return (
     <>
@@ -66,13 +57,15 @@ const Navbars = ({ search, handleSearch }) => {
                 </InputGroup>
               </Navbar.Brand>
 
-                  <Login
-                    showLog={showLog}
-                    setShowLog={setShowLog}
-                    handleShowLog={handleShowLog}
-                  />
-               
-              
+              {isTokenExists ? (
+                <Logout />
+              ) : (
+                <Login
+                  showLog={showLog}
+                  setShowLog={setShowLog}
+                  handleShowLog={handleShowLog}
+                />
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
