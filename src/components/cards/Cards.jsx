@@ -18,16 +18,13 @@ import "swiper/css";
 import "swiper/css/pagination";
 import Swal from "sweetalert2";
 
-// Import Swiper React components
-import { Swiper, SwiperSlide } from "swiper/react";
-
 const Cards = () => {
   const navigate = useNavigate();
 
   // books promo
   let { data: UniversitiesHipolabs, refetch: refetchUniversitiesHipolabs } =
     useQuery("UniversitiesHipolabsCache", async () => {
-      const response = await API.get(`/search?country=United States`);
+      const response = await API.get(`/search`);
       return response.data.data;
     });
 
