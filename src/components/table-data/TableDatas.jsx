@@ -1,9 +1,5 @@
 // component react
-import { useQuery } from "react-query";
-import { useState, useEffect } from "react";
-
-// api
-import { API } from "../../config/api";
+import { useState } from "react";
 
 // components react bootstrap
 import { Button, Table, Modal } from "react-bootstrap";
@@ -11,29 +7,12 @@ import { Button, Table, Modal } from "react-bootstrap";
 // style
 import "./TableDatas.scss";
 
-const TableDatas = () => {
+const TableDatas = ({ universities, search }) => {
   // Cek apakah token ada di local storage
   const userToken = localStorage.getItem("token");
 
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [showModal, setShowModal] = useState(false);
-
-  const { data: UniversitiesHipolabs, refetch: refetchUniversitiesHipolabs } =
-    useQuery("UniversitiesHipolabsCache", async () => {
-      try {
-        const response = await API.get("/search?country=indonesia");
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        throw new Error("Failed to fetch data from the API");
-      }
-    });
-
-  console.log(UniversitiesHipolabs);
-
-  useEffect(() => {
-    refetchUniversitiesHipolabs();
-  });
 
   const handleShowModal = (university) => {
     setSelectedUniversity(university);
@@ -58,26 +37,45 @@ const TableDatas = () => {
         </thead>
         <tbody>
           {userToken ? (
-            UniversitiesHipolabs ? (
-              UniversitiesHipolabs.map((data, i) => (
-                <tr key={i}>
-                  <td>{i + 1}</td>
-                  <td style={{ textAlign: "start" }}>{data.name}</td>
-                  <td style={{ textAlign: "start" }}>{data.country}</td>
-                  <td style={{ textAlign: "start" }}>
-                    <a
-                      href={data.web_pages}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {data.web_pages}
-                    </a>
-                  </td>
-                  <td>
-                    <Button onClick={() => handleShowModal(data)}>View</Button>
-                  </td>
-                </tr>
-              ))
+            universities ? (
+              universities
+                .filter((data) => {
+                  if (search === "") {
+                    return true; 
+                  } else if (
+                    data?.name.toLowerCase().includes(search.toLowerCase())
+                  ) {
+                    return true;
+                  }
+                  return false;
+                })
+                .map((filteredUniversity, i) => (
+                  <tr key={i}>
+                    <td>{i + 1}</td>
+                    <td style={{ textAlign: "start" }}>
+                      {filteredUniversity.name}
+                    </td>
+                    <td style={{ textAlign: "start" }}>
+                      {filteredUniversity.country}
+                    </td>
+                    <td style={{ textAlign: "start" }}>
+                      <a
+                        href={filteredUniversity.web_pages}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {filteredUniversity.web_pages}
+                      </a>
+                    </td>
+                    <td>
+                      <Button
+                        onClick={() => handleShowModal(filteredUniversity)}
+                      >
+                        View
+                      </Button>
+                    </td>
+                  </tr>
+                ))
             ) : (
               <tr>
                 <td colSpan="5">Loading...</td>
@@ -85,7 +83,11 @@ const TableDatas = () => {
             )
           ) : (
             <tr>
-              <td colSpan="5">Data not found. Please log in.</td>
+              <td colSpan="5">
+                {search !== "" && universities.length === 0
+                  ? "Data not found for the given search."
+                  : "Data not found. Please log in."}
+              </td>
             </tr>
           )}
         </tbody>

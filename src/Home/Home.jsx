@@ -7,11 +7,11 @@ import "./Home.scss";
 // components
 import TableDatas from "../components/table-data/TableDatas";
 
-const Home = () => {
+const Home = ({ universities, search }) => {
 
   return (
     <>
-      <TableDatas />
+      <TableDatas universities={universities} search={search}/>
     </>
   );
 };

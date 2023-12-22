@@ -1,18 +1,36 @@
-// components
+// components react
 import { Route, Routes } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQuery } from "react-query";
+
+// api
+import { API } from "./config/api";
 
 // components
 import Navbars from "./components/navbar/Navbar";
 import Home from "./Home/Home";
 
 function App() {
-
   // state search
   const [search, setSearch] = useState("");
+  const [universities, setUniversities] = useState();
 
-  // state data books
-  const [books, setBooks] = useState();
+  const { data, refetch: refetchUniversities } = useQuery(
+    "UniversitiesCache",
+    async () => {
+      try {
+        const response = await API.get("/search?country=indonesia");
+        setUniversities(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        throw new Error("Failed to fetch data from the API");
+      }
+    }
+  );
+
+  useEffect(() => {
+    refetchUniversities();
+  });
 
   // handle search
   const handleSearch = (e) => {
@@ -26,7 +44,7 @@ function App() {
         <Route
           exact
           path="/"
-          element={<Home books={books} search={search} />}
+          element={<Home universities={universities} search={search} />}
         />
       </Routes>
     </>
